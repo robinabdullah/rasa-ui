@@ -64,7 +64,7 @@ function TrainingController($scope, $rootScope, $interval, $http, Rasa_Status, B
       $scope.bot_data.stories = "";
       for (var i = 0; i < stories.length; i++) {
         if (stories[i].story) {
-          $scope.bot_data.stories += stories[i].story;
+          $scope.bot_data.stories += "\n\n" + stories[i].story;
         }
       }
       Actions.query({ bot_id: $scope.selectedBot.bot_id }, function(data) {
@@ -215,18 +215,28 @@ function TrainingController($scope, $rootScope, $interval, $http, Rasa_Status, B
     let entities = $scope.bot_data.entities;
     let actions = $scope.bot_data.actions;
     let responses = $scope.bot_data.responses;
+    let slotCount = 1;
+    let entitiesCount = 1;
 
-    tmpData += "slots:\n"
+    
     for (let entity_i = 0; entity_i < entities.length; entity_i++) {
       if (entities[entity_i].slot_data_type) {
+        if(slotCount == 1){ // append only once
+          tmpData += "slots:\n";
+          slotCount++;
+        }
         tmpData += "  " + entities[entity_i].entity_name + ":\n";
         tmpData += "    type: " + entities[entity_i].slot_data_type + "\n";
       }
     }
 
-    tmpData += "\nentities:\n"
+    
     for (let entity_i = 0; entity_i < entities.length; entity_i++) {
-      tmpData += "- " + entities[entity_i].entity_name + "\n"; 
+      if(entitiesCount == 1){ // append only once
+        tmpData += "\nentities:\n";
+        entitiesCount++;
+      }
+      tmpData += "- " + entities[entity_i].entity_name + "\n";
     }
     
     tmpData += "\nintents:\n"
