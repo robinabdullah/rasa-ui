@@ -14,6 +14,7 @@ const responses = require('../db/responses');
 const models = require('../db/models');
 const stories = require('../db/stories');
 const actions = require('../db/actions');
+const conversations = require('../db/conversations');
 
 const rasa_router = require('./rasa_router');
 const auth = require('./auth');
@@ -31,13 +32,14 @@ router.post('/bots', bots.createBot);
 router.put('/bots/:bot_id', bots.updateBot);
 router.delete('/bots/:bot_id', bots.removeBot);
 router.post('/bots/upload', bots.uploadBotFromFile);
+
 //routes intents
 router.get('/bots/:bot_id/intents', intents.getBotIntents);
 router.get('/intents/:intent_id', intents.getSingleIntent);
 router.put('/intents/:intent_id', intents.updateIntent);
-router.post('/bots/:bot_id/intents', intents.createBotIntent);
 router.post('/intents', intents.createBotIntent);
 router.delete('/intents/:intent_id', intents.removeIntent);
+
 //routes expression
 router.get('/intent_expressions', expressions.getIntentExpressionQuery); //Used for training
 router.get('/intents/:intent_id/expressions', expressions.getIntentExpressions);
@@ -45,51 +47,54 @@ router.get('/expressions/:expression_id', expressions.getSingleExpression);
 router.put('/expressions/:expression_id', expressions.updateExpression);
 router.post('/expressions', expressions.createIntentExpression);
 router.delete('/expressions/:expression_id', expressions.removeExpression);
+
 //routes parameters
 router.get('/expression_parameters', parameters.getExpressionParametersQuery); //Used for training
 router.get('/expresions/:expression_id/parameters', parameters.getExpressionParameters);
-//router.get('/parameters/:parameter_id', parameters.getSingleParameter);
 router.get('/intent/:intent_id/parameters', parameters.getIntentParameters);
 router.post('/parameters', parameters.createExpressionParameter);
 router.put('/parameters/:parameter_id', parameters.updateParameter);
 router.delete('/parameters/:parameter_id', parameters.removeExpressionParameter);
+
 //routes entities
-router.get('/entities', entities.getAllEntities);
+//router.get('/entities', entities.getAllEntities); //NeededTODO: Needed?
 router.get('/entities/bot/:bot_id', entities.getAllEntitiesForBot);
 router.get('/entities/:entity_id', entities.getSingleEntity);
 router.post('/entities', entities.createEntity);
 router.put('/entities/:entity_id', entities.updateEntity);
 router.delete('/entities/:entity_id', entities.removeEntity);
+
 //routes regex
 router.get('/bot/:bot_id/regex', regex.getBotRegex);
 router.get('/regex/:regex_id', regex.getSingleRegex);
 router.post('/regex', regex.createRegex);
 router.put('/regex/:regex_id', regex.updateRegex);
 router.delete('/regex/:regex_id', regex.removeRegex);
+
 //routes synonymes
 router.get('/bot/:bot_id/synonyms', synonyms.getBotSynonyms);
 router.get('/synonyms/:synonym_id', synonyms.getSingleSynonym);
 router.post('/synonyms', synonyms.createBotSynonym);
 router.delete('/synonyms/:synonym_id', synonyms.removeSynonym);
+
 //routes variants
 router.get('/synonyms_variants/:synonyms_id', variants.getSynonymsVariants); //Used for training
 router.get('/synonyms/:synonym_id/variants', variants.getSynonymVariants);
 router.get('/variants/:synonym_variant_id', variants.getSingleVariant);
-router.get('/synonymvariants', variants.getAllSynonymVariants);
 router.post('/variants', variants.createVariant);
 router.delete('/variants/:synonym_variant_id', variants.removeVariant);
 router.delete('/synonyms/:synonym_id/variants', variants.removeSynonymVariants);
+
 //routes settings
 router.get('/settings', settings.getSettings);
 router.get('/settings/:setting_name', settings.getSingleSetting);
 router.put('/settings/:setting_name', settings.updateSetting);
 
-//routes for core functions //////////////////////////////
+//routes for stories
 router.get('/stories/:bot_id', stories.getAllBotStories);
 router.post('/stories', stories.createStory);
 router.put('/stories', stories.updateStory);
 router.delete('/stories', stories.removeStory);
-router.get('/stories/:bot_id', stories.getAllBotStories);
 router.get('/stories/:bot_id/search', stories.searchStoryAttributes);
 
 //routes responses
@@ -101,8 +106,6 @@ router.delete('/response', responses.deleteResponse);
 router.get('/actions', actions.getBotActionsAndResponses);
 router.post('/actions', actions.createAction);
 router.delete('/actions', actions.removeAction);
-
-
 
 //routes logs
 router.get('/nlu_log/:query', logs.getLogs);
@@ -119,16 +122,24 @@ router.get('/avgUserResponseTimesLast30Days', logs.getAvgUserResponseTimesLast30
 router.get('/activeUserCountLast12Months', logs.getActiveUserCountLast12Months);
 router.get('/activeUserCountLast30Days', logs.getActiveUserCountLast30Days);
 
+//Conversations
+router.get('/conversations/:bot_id', conversations.getConversations);
+router.post('/conversations', conversations.createConversation);
+router.delete('/conversations', conversations.removeConversation);
+
 //rasa api's
 router.get('/rasa/status', rasa_router.getRasaNluStatus);
 router.get('/rasa/url', rasa_router.getRasaNluEndpoint);
-//router.get('/rasa/config', rasa_router.getRasaNluConfig);
 router.get('/rasa/version', rasa_router.getRasaNluVersion);
 router.post('/rasa/model/train', rasa_router.trainRasaNlu);
 router.put('/rasa/model', rasa_router.loadRasaModel);
 router.delete('/rasa/model', rasa_router.unloadRasaModel);
-//common middleware for parse
-router.post('/rasa/model/parse', rasa_router.parseRequest);
+router.post('/rasa/model/parse', rasa_router.modelParseRequest);
+router.post('/rasa/conversations/messages', rasa_router.conversationParseRequest);
+router.post('/rasa/restart', rasa_router.restartRasaCoreConversation);
+router.get('/rasa/story', rasa_router.getConversationStory);
+router.post('/rasa/conversations/execute', rasa_router.runActionInConversation);
+
 
 //authentication js
 router.post('/auth', auth.authenticateUser);

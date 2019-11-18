@@ -1,8 +1,8 @@
 [![Docker Automated build](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg)](https://hub.docker.com/r/paschmann/rasa-ui/)
 
-# Rasa UI
+# Rasa UI 
 
-Rasa UI is a web application built on top of, and for [Rasa] (https://github.com/RasaHQ/rasa). Rasa UI provides a web application to quickly and easily be able to create and manage bots, NLU components (Regex, Examples, Entities, Intents, etc.) and Core components (Stories, Actions, Responses, etc.) through a web interface. It also provides some convenience features for Rasa, like training and loading your models, monitoring usage or viewing logs.
+Rasa UI is a web application built on top of, and for [Rasa](https://github.com/RasaHQ/rasa). Rasa UI provides a web application to quickly and easily be able to create and manage bots, NLU components (Regex, Examples, Entities, Intents, etc.) and Core components (Stories, Actions, Responses, etc.) through a web interface. It also provides some convenience features for Rasa, like training and loading your models, monitoring usage or viewing logs.
 
 ## Features
 
@@ -14,9 +14,8 @@ Rasa UI is a web application built on top of, and for [Rasa] (https://github.com
 - Data is stored in a SQLite DB for backing up/sharing
 - Can be used with or without a Rasa backend to manage your training data
 
-![Screenshot 1](/web/src/assets/img/screenshot1_small.png)
-
-![Screenshot 2](/web/src/assets/img/screenshot2_small.png)
+<img src="/web/src/assets/img/screenshot1.png" width="500">
+<img src="/web/src/assets/img/screenshot2.png" width="500">
 
 ## Getting Started
 
@@ -25,20 +24,20 @@ Rasa UI can run on your Rasa instance, or on a separate machine. Technically Ras
 ### Prerequisites
 
 [Node.js/npm](https://nodejs.org/en/) - Serves Rasa UI - Required
+
 [Rasa](https://github.com/RasaHQ/rasa) - Developed against Version 1.2+ - Optional
 
 ### Installing
 
-Clone/download the Rasa UI repository or a [release](https://www.github.com/paschmann/rasa-ui)
-Install npm packages.
-Set Rasa Server variable in package.json
+1. Clone/download the Rasa UI repository or a [release](https://www.github.com/paschmann/rasa-ui)
+2. Install npm packages.
+3. Set Rasa Server variable in package.json
 
 ```
 git clone https://github.com/paschmann/rasa-ui.git
-cd rasaui && npm install
+cd rasa-ui
+npm install
 ```
-
-Please see the [wiki](https://github.com/paschmann/rasa-ui/wiki/Rasa-UI-Install-Guide) for more detailed instructions.
 
 ## Running
 
@@ -48,6 +47,18 @@ Run npm start from the server folder (rasa-ui)
 npm start
 ```
 Your web application should be available on http://localhost:5001
+
+## Running from Docker
+
+If you **already** have a Rasa instance setup and running, you can run Rasa UI from docker hub using [paschmann/rasa-ui](https://hub.docker.com/r/paschmann/rasa-ui/). You will need to edit the environment variables, specifically the **rasa_endpoint**.
+
+If you **dont** have a Rasa instance setup, you can run both Rasa and Rasa UI using the [docker-compose file](https://github.com/paschmann/rasa-ui/blob/master/docker-compose.yml), copy the file to a local directory and run the command below:
+
+```
+docker-compose up
+```
+
+The docker-compose up command will use the docker-compose.yml file to create both the Rasa container and Rasa UI container, and create a networked connection between both.
 
 ## Upgrading
 

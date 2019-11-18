@@ -5,7 +5,7 @@ function getSingleVariant(req, res, next) {
   logger.winston.info('variants.getSingleVariant');
   db.get('select * from synonym_variants where synonym_variant_id = ?', req.params.synonym_variant_id, function(err, data) {
     if (err) {
-      logger.winston.info(err);
+      logger.winston.error(err);
     } else {
       res.status(200).json(data);
     }
@@ -16,7 +16,7 @@ function getSynonymVariants(req, res, next) {
   logger.winston.info('variants.getSynonymVariants');
   db.all('select * from synonym_variants where synonym_id = ? order by synonym_variant_id desc', req.params.synonym_id, function(err, data) {
     if (err) {
-      logger.winston.info(err);
+      logger.winston.error(err);
     } else {
       res.status(200).json(data);
     }
@@ -29,18 +29,7 @@ function getSynonymsVariants(req, res, next) {
   var array_synonymIds = synonymsId.split(","); //Very hacky due to the node-sqlite not supporting IN from an array
   db.all('select * from synonym_variants where synonym_id in (' + array_synonymIds + ')', function(err, data) {
     if (err) {
-      logger.winston.info(err);
-    } else {
-      res.status(200).json(data);
-    }
-  });
-}
-
-function getAllSynonymVariants(req, res, next) {
-  logger.winston.info('variants.getAllSynonymVariants');
-  db.all("select synonym_reference as value, '[' || string_agg('\'' || synonym_value || '\'', ', ') || ']' as synonyms from entity_synonym_variants group by 1", function(err, data) {
-    if (err) {
-      logger.winston.info(err);
+      logger.winston.error(err);
     } else {
       res.status(200).json(data);
     }
@@ -51,7 +40,7 @@ function createVariant(req, res, next) {
   logger.winston.info('variants.createVariant');
   db.run('insert into synonym_variants (synonym_id, synonym_value)' + 'values (?, ?)', [req.body.synonym_id, req.body.synonym_value], function(err) {
     if (err) {
-      logger.winston.info("Error inserting a new record");
+      logger.winston.error("Error inserting a new record");
     } else {
       db.get('SELECT last_insert_rowid()', function(err, data) {
         if (err) {
@@ -68,7 +57,7 @@ function removeVariant(req, res, next) {
   logger.winston.info('variants.removeVariant');
   db.run('delete from synonym_variants where synonym_variant_id = ?', req.params.synonym_variant_id, function(err) {
     if (err) {
-      logger.winston.info("Error removing the record");
+      logger.winston.error("Error removing the record");
     } else {
       res.status(200).json({ status: 'success', message: 'Removed' });
     }
@@ -79,7 +68,7 @@ function removeSynonymVariants(req, res, next) {
   logger.winston.info('variants.removeSynonymVariants');
   db.run('delete from synonym_variants where synonym_id = ?', req.params.synonym_id, function(err) {
     if (err) {
-      logger.winston.info("Error removing the record");
+      logger.winston.error("Error removing the record");
     } else {
       res.status(200).json({ status: 'success', message: 'Removed' });
     }
@@ -92,5 +81,5 @@ module.exports = {
   createVariant,
   removeVariant,
   removeSynonymVariants,
-  getSynonymsVariants,
-  getAllSynonymVariants};
+  getSynonymsVariants
+};
