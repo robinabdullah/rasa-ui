@@ -37,18 +37,18 @@ app.set('view engine', 'html');
 
 /** Serve static files for UI website on root / */
 
-app.use(config.nodeBaseUrl + '/assets', express.static(path.join(path.resolve(), '../web/src/assets')));
-app.use(config.nodeBaseUrl + '/app', express.static(path.join(path.resolve(), '../web/src/app')));
-app.use(config.nodeBaseUrl + '/scripts', express.static(path.join(path.resolve(), '../node_modules/')));
+app.use('/assets', express.static(path.join(path.resolve(), '../web/src/assets')));
+app.use('/app', express.static(path.join(path.resolve(), '../web/src/app')));
+app.use('/scripts', express.static(path.join(path.resolve(), '../node_modules/')));
 
-app.get(config.nodeBaseUrl, (req, res) => {
+app.get('/', (req, res) => {
   console.log(config.nodeBaseUrl);
   return res.render('index');
 });
 
 const server = require('http').createServer(app);
  
-app.use(config.nodeBaseUrl + '/api/v2/', routes);
+app.use('/api/v2/', routes);
 
 if (app.get('env') === 'development') {
   // error handlers

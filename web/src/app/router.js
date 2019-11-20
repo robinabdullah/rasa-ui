@@ -1,4 +1,3 @@
-
 angular
   .module('app')
   .config(function (
@@ -13,22 +12,22 @@ angular
       .hashPrefix('');
 
     $routeProvider
-      .when(process.env.node_base_url, {
+      .when('/', {
         controller: 'DashboardController as dashboard',
         templateUrl: '/app/components/dashboard/dashboard.html',
         activePage: 'dashboard'
       })
-      .when(process.env.node_base_url + '/login', {
+      .when('/login', {
         controller: 'LoginController',
         templateUrl: '/app/components/login/login.html',
         activePage: 'login'
       })
-      .when(process.env.node_base_url + '/dashboard', {
+      .when('/dashboard', {
         controller: 'DashboardController as dashboard',
         templateUrl: '/app/components/dashboard/dashboard.html',
         activePage: 'dashboard'
       })
-      .when(process.env.node_base_url + '/bots', {
+      .when('/bots', {
         controller: 'BotsController as bot',
         templateUrl: '/app/components/bots/bots.html',
         activePage: 'bots'
