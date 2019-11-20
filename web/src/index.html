@@ -97,11 +97,11 @@
   </div>
 
   <div ng-if="authenticated">
-    <div ng-include="'/app/shared/navbar/navbar.html'"></div>
+    <div ng-include="'/node/rasa-ui/app/shared/navbar/navbar.html'"></div>
     <div class="app-body">
-      <div ng-include="'/app/shared/sidebar/sidebar.html'"></div>
+      <div ng-include="'/node/rasa-ui/app/shared/sidebar/sidebar.html'"></div>
       <main class="main"><span ng-view></span></main>
-      <div ng-include="'/app/shared/aside/aside.html'"></div>
+      <div ng-include="'/node/rasa-ui/app/shared/aside/aside.html'"></div>
     </div>
   </div>
   <div ng-if="!authenticated && !adalauthentication" ng-cloak>

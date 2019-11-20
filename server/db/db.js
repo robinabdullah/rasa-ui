@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const logger = require('../util/logger');
+const path = require('path');
 
 var db_file_path = "";
 
@@ -12,7 +13,7 @@ if (process.env.npm_lifecycle_event == 'test:server') {
     //console.error(err)
   }
 } else {
-  db_file_path = "server/data/db.sqlite3";
+  db_file_path = "../server/data/db.sqlite3";
 }
 
 let db = new sqlite3.Database(db_file_path, (err) => { 

@@ -8,3 +8,4 @@ server/data/db.sqlite3
 *.swp
 *.iml
 
+iisnode
