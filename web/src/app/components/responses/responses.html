@@ -79,7 +79,7 @@
                         
                       </tr>
                     
-                          <tr ng-repeat="response in responseFilteredList = (responseList | orderBy: response_id  | filter: { action_id: action.action_id })">
+                          <tr ng-repeat="response in responseFilteredList = (responseList | orderBy: response_id  | filter: { action_id: action.action_id } : true)">
                             <td>
                               <select ng-options="responseType.type as responseType.type for responseType in responseTypeList"
                                 ng-change="updateResponse(response.response_id, response.response_type, response.response_text)"
