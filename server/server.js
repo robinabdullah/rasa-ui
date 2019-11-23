@@ -8,7 +8,7 @@ global.admin_username = process.env.admin_username || process.env.npm_package_co
 global.admin_password = process.env.admin_password || process.env.npm_package_config_admin_password;
 global.db_schema = process.env.db_schema || process.env.npm_package_config_db_schema;
 global.db_autoupdate = process.env.db_autoupdate || process.env.npm_package_config_db_autoupdate;
-global.node_base_url = process.env.node_base_url || process.env.npm_package_config_node_base_url;
+global.node_base_url = process.env.node_base_url || process.env.npm_package_config_node_base_url; // FIXME rasa-ui-custom:
 
 const express = require('express');
 const proxy = require('http-proxy-middleware');
@@ -31,6 +31,7 @@ app.use(
 );
 app.use(bodyParser.json({ limit: '2mb' }));
 
+// FIXME rasa-ui-custom: starts
 app.set('views', path.join(__dirname, '../web/src/'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
@@ -42,9 +43,9 @@ app.use('/app', express.static(path.join(path.resolve(), '../web/src/app')));
 app.use('/scripts', express.static(path.join(path.resolve(), '../node_modules/')));
 
 app.get('/', (req, res) => {
-  console.log(config.nodeBaseUrl);
   return res.render('index');
 });
+// FIXME rasa-ui-custom: ends
 
 const server = require('http').createServer(app);
  
@@ -71,7 +72,7 @@ if (app.get('env') === 'development') {
   });
 }
 
-const listener = server.listen(process.env.PORT);
+const listener = server.listen(process.env.PORT); // FIXME rasa-ui-custom: 5001 changed to process.env.PORT
 
 checkRasaUI();
 checkRasa();

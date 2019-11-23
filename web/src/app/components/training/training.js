@@ -215,16 +215,18 @@ function TrainingController($scope, $rootScope, $interval, $http, Rasa_Status, B
     let entities = $scope.bot_data.entities;
     let actions = $scope.bot_data.actions;
     let responses = $scope.bot_data.responses;
-    let slotCount = 1;
-    let entitiesCount = 1;
+    let slotCount = 1; // FIXME rasa-ui-custom: added
+    let entitiesCount = 1; // FIXME rasa-ui-custom: added
 
     
     for (let entity_i = 0; entity_i < entities.length; entity_i++) {
       if (entities[entity_i].slot_data_type) {
+        // FIXME rasa-ui-custom: starts
         if(slotCount == 1){ // append only once
           tmpData += "slots:\n";
           slotCount++;
         }
+        // FIXME rasa-ui-custom: ends
         tmpData += "  " + entities[entity_i].entity_name + ":\n";
         tmpData += "    type: " + entities[entity_i].slot_data_type + "\n";
       }
@@ -232,16 +234,21 @@ function TrainingController($scope, $rootScope, $interval, $http, Rasa_Status, B
 
     
     for (let entity_i = 0; entity_i < entities.length; entity_i++) {
+      // FIXME rasa-ui-custom: starts
       if(entitiesCount == 1){ // append only once
         tmpData += "\nentities:\n";
         entitiesCount++;
       }
+      // FIXME rasa-ui-custom: ends
       tmpData += "- " + entities[entity_i].entity_name + "\n";
     }
     
     tmpData += "\nintents:\n"
     for (let intent_i = 0; intent_i < intents.length; intent_i++) {
-      tmpData += "- " + intents[intent_i].intent_name + "\n"; 
+      // FIXME rasa-ui-custom: below 3 lines added/modified for the purpose of chitchat/faq. if intent name includes ask_faq then it will automatically converted to utter fix answer.
+      let intentName = intents[intent_i].intent_name;
+      let intentGenerate = intentName.includes('ask_faq') || intentName.includes('chitchat') ? intentName + `: {triggers: utter_${intentName}` : intentName;
+      tmpData += "- " + intentGenerate + "\n";
     }
 
     tmpData += "\ntemplates:\n"
