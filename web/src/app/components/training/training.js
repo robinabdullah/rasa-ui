@@ -180,6 +180,7 @@ function TrainingController($scope, $rootScope, $interval, $http, Rasa_Status, B
           tmpData += "- " + expression + "\n";
         }
       }
+      tmpData += "\n"; // FIXME rasa-ui-custom: added
     }
     tmpData += "\n";
 
