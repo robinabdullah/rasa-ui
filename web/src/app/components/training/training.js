@@ -247,7 +247,7 @@ function TrainingController($scope, $rootScope, $interval, $http, Rasa_Status, B
     for (let intent_i = 0; intent_i < intents.length; intent_i++) {
       // FIXME rasa-ui-custom: below 3 lines added/modified for the purpose of chitchat/faq. if intent name includes ask_faq then it will automatically converted to utter fix answer.
       let intentName = intents[intent_i].intent_name;
-      let intentGenerate = intentName.includes('ask_faq') || intentName.includes('chitchat') ? intentName + `: {triggers: utter_${intentName}` : intentName;
+      let intentGenerate = intentName.includes('ask_faq') || intentName.includes('chitchat') ? intentName + `: {triggers: utter_${intentName}}` : intentName;
       tmpData += "- " + intentGenerate + "\n";
     }
 
